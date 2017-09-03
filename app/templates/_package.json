@@ -6,6 +6,9 @@
     "converse.js",
     "plugin"
   ],
+  "scripts": {
+    "start": "./node_modules/.bin/http-server -c-1"
+  },
   "license": "BSD-3-Clause",
   "devDependencies": {
     "requirejs": "latest",
