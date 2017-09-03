@@ -6,7 +6,7 @@ This is a [Yeoman](http://yeoman.io/) generator for creating [Converse.js](https
 
 Firstly, make sure you have Yeoman installed:
 
-    npm install -g yo
+    npm install -g yo generator-conversejs
 
 Then, to create a new plugin, run the following:
 
@@ -28,8 +28,8 @@ generated plugin.
 Converse.js uses [pluggable.js](https://jcbrand.github.io/pluggable.js/) to
 provide its plugin architecture.
 
-For more info on how plugins work and how to write them, you can read the
-[documentation on how to write a plugin](https://conversejs.org/docs/html/plugin_development.html)
+For more info on how plugins work and how to write them, you can read
+Converse.js's [documentation on how to write a plugin](https://conversejs.org/docs/html/plugin_development.html)
 as well as the [pluggable.js documentation](https://conversejs.org/docs/html/plugin_development.html).
 
 ## Hacking on this generator
