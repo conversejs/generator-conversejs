@@ -15,9 +15,11 @@ module.exports = class extends Generator {
                 message : 'Your plugin\'s name',
                 default : 'converse-plugin'
             }]).then((answers) => {
-                this.options.name = answers.name;
+                this.options.name = this._slugify(answers.name);
             });
-        }
+        } else {
+			this.options.name = this._slugify(this.options.name);
+		}
 	}
 
     writing () {
@@ -25,6 +27,15 @@ module.exports = class extends Generator {
         this._writingREADME();
         this._writingPackageJSON();
         this._writingScripts();
+    }
+
+    _slugify (text) {
+		return text.toString().toLowerCase()
+			.replace(/\s+/g, '-')           // Replace spaces with -
+			.replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+			.replace(/\-\-+/g, '-')         // Replace multiple - with single -
+			.replace(/^-+/, '')             // Trim - from start of text
+			.replace(/-+$/, '');            // Trim - from end of text
     }
 
     _writingHTML () {
