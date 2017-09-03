@@ -31,7 +31,9 @@ module.exports = class extends Generator {
         this.fs.copyTpl(
             this.templatePath('index.html'),
             this.destinationPath(this.options.name+'/index.html'),
-            { title: 'Converse.js Plugin Demo' }
+            { title: 'Converse.js Plugin Demo',
+              name: this.options.name
+            }
         );
     }
 
