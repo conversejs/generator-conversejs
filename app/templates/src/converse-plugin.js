@@ -1,7 +1,7 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
-        // AMD. Register as a module called "myplugin"
-        define("<%= name %>", ["converse"], factory);
+        // Register as an AMD module.
+        define(["converse"], factory);
     } else {
         // Browser globals. If you're not using a module loader such as require.js,
         // then this line below executes. Make sure that your plugin's <script> tag
