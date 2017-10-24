@@ -9,6 +9,7 @@
         factory(converse);
     }
 }(this, function (converse) {
+    'use strict';
 
     // Commonly used utilities and variables can be found under the "env"
     // namespace of the "converse" global.
@@ -17,7 +18,7 @@
         $msg = converse.env.$msg,
         $pres = converse.env.$pres,
         $build = converse.env.$build,
-        b64_sha1 = converse.env.b64_sha1;
+        b64_sha1 = converse.env.b64_sha1,
         $ = converse.env.jQuery,
         _ = converse.env._,
         moment = converse.env.moment;
