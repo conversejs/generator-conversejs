@@ -1,6 +1,6 @@
 {
   "name": "generator-conversejs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Create a Converse.js plugin",
   "main": "src/converse-plugin.js",
   "scripts": {
