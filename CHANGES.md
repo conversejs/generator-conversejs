@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.0.2 (Unreleased)
+## 0.0.2 (2017-10-31)
 
 - Don't name the AMD module, this is done by config scripts.
 - Set 'use strict' in the plugin.
