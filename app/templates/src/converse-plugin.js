@@ -1,155 +1,128 @@
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // Register as an AMD module.
-        define(["converse"], factory);
-    } else {
-        // Browser globals. If you're not using a module loader such as require.js,
-        // then this line below executes. Make sure that your plugin's <script> tag
-        // appears after the one from converse.js.
-        factory(converse);
-    }
-}(this, function (converse) {
-    'use strict';
+// A Converse.js plugin
+//
+// Note, this plugin assumes that the "converse" object is globally defined.
 
-    // Commonly used utilities and variables can be found under the "env"
-    // namespace of the "converse" global.
-    var Strophe = converse.env.Strophe,
-        $iq = converse.env.$iq,
-        $msg = converse.env.$msg,
-        $pres = converse.env.$pres,
-        $build = converse.env.$build,
-        b64_sha1 = converse.env.b64_sha1,
-        $ = converse.env.jQuery,
-        _ = converse.env._,
-        moment = converse.env.moment;
 
-    // The following line registers your plugin.
-    converse.plugins.add("<%= name %>", {
+// Commonly used utilities and variables can be found under the "env"
+// namespace of the "converse" global.
+const Strophe = converse.env.Strophe,
+    $build = converse.env.$build,
+    $iq = converse.env.$iq,
+    $msg = converse.env.$msg,
+    $pres = converse.env.$pres,
+    _ = converse.env._,
+    dayjs = converse.env.dayjs;
 
-        /* Optional dependencies are other plugins which might be
-         * overridden or relied upon, and therefore need to be loaded before
-         * this plugin. They are called "optional" because they might not be
-         * available, in which case any overrides applicable to them will be
-         * ignored.
-		 *
-         * NB: These plugins need to have already been loaded via require.js.
-         *
-         * It's possible to make optional dependencies non-optional.
-         * If the setting "strict_plugin_dependencies" is set to true,
-         * an error will be raised if the plugin is not found.
-         */
-        'optional_dependencies': [],
 
-        /* Converse.js's plugin mechanism will call the initialize
-         * method on any plugin (if it exists) as soon as the plugin has
-         * been loaded.
-		 */
-        'initialize': function () {
-            /* Inside this method, you have access to the private
-             * `_converse` object.
-             */
-            var _converse = this._converse;
-			_converse.log("The <%= name %> plugin is being initialized");
+converse.plugins.add("<%= name %>", {
 
-            /* From the `_converse` object you can get any configuration
-             * options that the user might have passed in via
-             * `converse.initialize`. These values are stored in the
-             * "user_settings" attribute.
-             *
-             * You can also specify new configuration settings for this
-             * plugin, or override the default values of existing
-             * configuration settings. This is done like so:
-             */
-             _converse.api.settings.update({
-                 'initialize_message': 'Initializing <%= name %>!'
-             });
+    // Optional dependencies are other plugins which might be
+    // overridden or relied upon, and therefore need to be loaded before
+    // this plugin. They are called "optional" because they might not be
+    // available, in which case any overrides applicable to them will be
+    // ignored.
+    //
+    // NB: These plugins need to have already been loaded via require.js.
+    //
+    // It's possible to make optional dependencies non-optional.
+    // If the setting "strict_plugin_dependencies" is set to true,
+    // an error will be raised if the plugin is not found.
+    optional_dependencies: [],
 
-            /* The user can then pass in values for the configuration
-             * settings when `converse.initialize` gets called.
-             * For example:
-             *
-             *      converse.initialize({
-             *           "initialize_message": "My plugin has been initialized"
-             *      });
-             *
-             * And the configuration setting is then available via the
-             * `user_settings` attribute:
-             */
-             alert(this._converse.user_settings.initialize_message);
+    // Converse.js's plugin mechanism will call the initialize
+    // method on any plugin (if it exists) as soon as all the plugin
+    // have been loaded.
+    initialize () {
+        // Inside this method, you have access to the private
+        // `_converse` and `api` objects.
+        const { _converse } = this;
+        const { api, log } = _converse;
+        log.info:("The <%= name %> plugin is being initialized");
 
-            /* Besides `_converse.api.settings.update`, there is also a
-             * `_converse.api.promises.add` method, which allows you to
-             * add new promises that your plugin is obligated to fulfill.
-             *
-             * This method takes a string or a list of strings which
-             * represent the promise names:
-             *
-             *      _converse.api.promises.add('myPromise');
-             *
-             * Your plugin should then, when appropriate, resolve the
-             * promise by calling `_converse.api.emit`, which will also
-             * emit an event with the same name as the promise.
-             * For example:
-             *
-             *      _converse.api.emit('operationCompleted');
-             *
-             * Other plugins can then either listen for the event
-             * `operationCompleted` like so:
-             *
-             *      _converse.api.listen.on('operationCompleted', function { ... });
-             *
-             * or they can wait for the promise to be fulfilled like so:
-             *
-             *      _converse.api.waitUntil('operationCompleted', function { ... });
-             */
+        // You can specify configuration settings related to this
+        // plugin, and also override the default values of existing
+        // configuration settings.
+        api.settings.update({
+             'initialize_message': 'Initializing <%= name %>!'
+         });
+
+        // Settings are passed in when `converse.initialize` is called.
+        // For example:
+        //      converse.initialize({
+        //           "initialize_message": "My plugin has been initialized"
+        //      });
+        //
+        // And the configuration setting is then available via API:
+        api.alert('info', 'Initalize Message', api.settings.get('initialize_message'));
+
+        // Besides `api.settings.update`, there is also a
+        // `api.promises.add` method, which allows you to
+        // add promises that your plugin is expected to fulfill.
+        //
+        // This method takes a string or a list of strings which
+        // represent the promise names:
+        //
+        //      api.promises.add('operationCompleted');
+        //
+        // Your plugin should then, when appropriate, resolve the
+        // promise by calling `api.emit`, which will also
+        // emit an event with the same name as the promise.
+        // For example:
+        //
+        //      api.emit('operationCompleted');
+        //
+        // Other plugins can then either listen for the event
+        // `operationCompleted` like so:
+        //
+        //      api.listen.on('operationCompleted', function { ... });
+        //
+        // or they can wait for the promise to be fulfilled like so:
+        //
+        //      api.waitUntil('operationCompleted', function { ... });
+    },
+
+    // If you want to override some function or a Model or View defined
+    // elsewhere in Converse.js, then you do that under the "overrides"
+    // namespace.
+    //
+    // Note: use overrides with caution. They are so-called "monkey patches"
+    // which make the runtime code much harder to reason about and can cause
+    // difficult to debug bugs.
+    //
+    // Usually you can modify existing functionality via configuration
+    // settings, the APi or by properly listening and reacting to events and
+    // hooks.
+    overrides: {
+        // For example, the private *_converse* object has a
+        // method "onDisconnected". You can override that method as follows:
+        onDisconnected () {
+            // Overrides the onDisconnected method in converse.js
+
+
+            // Top-level functions in "overrides" are bound to the
+            // inner "_converse" object.
+            const _converse = this;
+            const { api } = _converse;
+            api.alert('info', 'Alert', 'Goodbye!');
+
+            // You can access the original function being overridden
+            // via the __super__ attribute.
+            // Make sure to pass on the arguments supplied to this
+            // function and also to apply the proper "this" object.
+            _converse.__super__.onDisconnected.apply(this, arguments);
         },
 
-        /* If you want to override some function or a Backbone model or
-         * view defined elsewhere in converse.js, then you do that under
-         * the "overrides" namespace.
-         */
-        'overrides': {
-            /* For example, the private *_converse* object has a
-             * method "onConnected". You can override that method as follows:
-             */
-            'onConnected': function () {
-                // Overrides the onConnected method in converse.js
-
-                // Top-level functions in "overrides" are bound to the
-                // inner "_converse" object.
-                var _converse = this;
-
-                // Your custom code can come here ...
-
-                // You can access the original function being overridden
-                // via the __super__ attribute.
-                // Make sure to pass on the arguments supplied to this
-                // function and also to apply the proper "this" object.
-                _converse.__super__.onConnected.apply(this, arguments);
-
-                // Your custom code can come here ...
-            },
-
-            /* Override converse.js's XMPPStatus Backbone model so that we can override the
-             * function that sends out the presence stanza.
-             */
-            'XMPPStatus': {
-                'sendPresence': function (type, status_message, jid) {
-                    // The "_converse" object is available via the __super__
-                    // attribute.
-                    var _converse = this.__super__._converse;
-
-                    // Custom code can come here ...
-
-                    // You can call the original overridden method, by
-                    // accessing it via the __super__ attribute.
-                    // When calling it, you need to apply the proper
-                    // context as reference by the "this" variable.
-                    this.__super__.sendPresence.apply(this, arguments);
-
-                    // Custom code can come here ...
-                }
+        // Override the XMPPStatus model's `getFullname` method to return a salutation.
+        XMPPStatus: {
+            getFullname () {
+                // The "_converse" object is available via the __super__ attribute.
+                const { _converse } = this.__super__;
+                // You can call the original overridden method, by
+                // accessing it via the __super__ attribute.
+                // When calling it, you need to apply the proper
+                // context as reference by the "this" variable.
+                return `The right honorable ${this.__super__.getFullname.call(this)}`;
             }
         }
-    });
-}));
+    }
+});
