@@ -37,7 +37,7 @@ converse.plugins.add("<%= name %>", {
         // `_converse` and `api` objects.
         const { _converse } = this;
         const { api, log } = _converse;
-        log.info:("The <%= name %> plugin is being initialized");
+        log.info("The <%= name %> plugin is being initialized");
 
         // You can specify configuration settings related to this
         // plugin, and also override the default values of existing
