@@ -5,29 +5,20 @@
 
 // Commonly used utilities and variables can be found under the "env"
 // namespace of the "converse" global.
-const Strophe = converse.env.Strophe,
-    $build = converse.env.$build,
-    $iq = converse.env.$iq,
-    $msg = converse.env.$msg,
-    $pres = converse.env.$pres,
-    _ = converse.env._,
-    dayjs = converse.env.dayjs;
+const { Strophe, $build, $iq, $msg, $pres, _, dayjs, u } = converse.env;
 
 
 converse.plugins.add("<%= name %>", {
 
-    // Optional dependencies are other plugins which might be
+    // Dependencies are other plugins which might be
     // overridden or relied upon, and therefore need to be loaded before
-    // this plugin. They are called "optional" because they might not be
-    // available, in which case any overrides applicable to them will be
-    // ignored.
+    // this plugin. They are optional because they're not required to be
+    // available (in which case any overrides applicable to them will be ignored).
     //
-    // NB: These plugins need to have already been loaded via require.js.
-    //
-    // It's possible to make optional dependencies non-optional.
-    // If the setting "strict_plugin_dependencies" is set to true,
-    // an error will be raised if the plugin is not found.
-    optional_dependencies: [],
+    // It's possible to make them required by setting
+    // "strict_plugin_dependencies" to true,
+    // An error will then be raised if the plugin is not found.
+    dependencies: [],
 
     // Converse.js's plugin mechanism will call the initialize
     // method on any plugin (if it exists) as soon as all the plugin
