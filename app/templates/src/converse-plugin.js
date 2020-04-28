@@ -1,15 +1,6 @@
 // A Converse.js plugin
-//
-// Note, this plugin assumes that the "converse" object is globally defined.
 
-
-// Commonly used utilities and variables can be found under the "env"
-// namespace of the "converse" global.
-const { Strophe, $build, $iq, $msg, $pres, _, dayjs, u } = converse.env;
-
-
-converse.plugins.add("<%= name %>", {
-
+const plugin = {
     // Dependencies are other plugins which might be
     // overridden or relied upon, and therefore need to be loaded before
     // this plugin. They are optional because they're not required to be
@@ -24,6 +15,12 @@ converse.plugins.add("<%= name %>", {
     // method on any plugin (if it exists) as soon as all the plugin
     // have been loaded.
     initialize () {
+        // Commonly used utilities and variables can be found under the "env"
+        // namespace of the "converse" global.
+        //
+        // For example:
+        //     const { Strophe, $build, $iq, $msg, $pres, _, dayjs, u } = converse.env;
+
         // Inside this method, you have access to the private
         // `_converse` and `api` objects.
         const { _converse } = this;
@@ -106,8 +103,11 @@ converse.plugins.add("<%= name %>", {
         // Override the XMPPStatus model's `getFullname` method to return a salutation.
         XMPPStatus: {
             getFullname () {
-                // The "_converse" object is available via the __super__ attribute.
-                const { _converse } = this.__super__;
+                // The "_converse" object is available via the __super__ attribute:
+                //
+                // For example:
+                //     const { _converse } = this.__super__;
+
                 // You can call the original overridden method, by
                 // accessing it via the __super__ attribute.
                 // When calling it, you need to apply the proper
@@ -116,4 +116,14 @@ converse.plugins.add("<%= name %>", {
             }
         }
     }
-});
+}
+
+
+if (typeof converse === "undefined") {
+    window.addEventListener(
+        'converse-loaded',
+        () => converse.plugins.add("muc-presence-probe", plugin)
+    );
+} else {
+    converse.plugins.add("muc-presence-probe", plugin);
+}
