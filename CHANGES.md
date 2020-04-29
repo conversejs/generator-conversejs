@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.0.3 (Unreleased)
+## 0.0.3 (2020-04-29)
 
 - Update to yeoman-generator 4.9.0
 - Use ES6+ in the plugin template
