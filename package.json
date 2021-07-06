@@ -17,6 +17,6 @@
   "author": "JC Brand",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "yeoman-generator": "^4.9.0"
+    "yeoman-generator": "^5.4.0"
   }
 }
