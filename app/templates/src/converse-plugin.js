@@ -67,63 +67,31 @@ const plugin = {
         // or they can wait for the promise to be fulfilled like so:
         //
         //      api.waitUntil('operationCompleted', function { ... });
-    },
 
-    // If you want to override some function or a Model or View defined
-    // elsewhere in Converse.js, then you do that under the "overrides"
-    // namespace.
-    //
-    // Note: use overrides with caution. They are so-called "monkey patches"
-    // which make the runtime code much harder to reason about and can cause
-    // difficult to debug bugs.
-    //
-    // Usually you can modify existing functionality via configuration
-    // settings, the APi or by properly listening and reacting to events and
-    // hooks.
-    overrides: {
-        // For example, the private *_converse* object has a
-        // method "onDisconnected". You can override that method as follows:
-        onDisconnected () {
-            // Overrides the onDisconnected method in converse.js
-
-
-            // Top-level functions in "overrides" are bound to the
-            // inner "_converse" object.
-            const _converse = this;
-            const { api } = _converse;
-            api.alert('info', 'Alert', 'Goodbye!');
-
-            // You can access the original function being overridden
-            // via the __super__ attribute.
-            // Make sure to pass on the arguments supplied to this
-            // function and also to apply the proper "this" object.
-            _converse.__super__.onDisconnected.apply(this, arguments);
-        },
-
-        // Override the XMPPStatus model's `getFullname` method to return a salutation.
-        XMPPStatus: {
-            getFullname () {
-                // The "_converse" object is available via the __super__ attribute:
-                //
-                // For example:
-                //     const { _converse } = this.__super__;
-
-                // You can call the original overridden method, by
-                // accessing it via the __super__ attribute.
-                // When calling it, you need to apply the proper
-                // context as reference by the "this" variable.
-                return `The right honorable ${this.__super__.getFullname.call(this)}`;
-            }
-        }
+        // In your plugin, you can also listen for hooks.
+        // Hooks allow you to add or modify data and properties used by
+        // Converse.
+        //
+        // For example, the getToolbarButtons hook allows you to add new buttons to the chat toolbar.
+        // https://conversejs.org/docs/html/api/-_converse.html#event:getToolbarButtons
+         api.listen.on('getToolbarButtons', (_toolbar_el, buttons) => {
+            buttons.push(html`
+                <button class="my-button" @click=${alert('hello world!')}>
+                    <converse-icon class="fa fa-eye" size="1em" color="blue"></converse-icon>
+                </button>
+            `);
+            return buttons;
+        });
     }
+
 }
 
 
 if (typeof converse === "undefined") {
     window.addEventListener(
         'converse-loaded',
-        () => converse.plugins.add("muc-presence-probe", plugin)
+        () => converse.plugins.add("my-example-plugin", plugin)
     );
 } else {
-    converse.plugins.add("muc-presence-probe", plugin);
+    converse.plugins.add("my-example-plugin", plugin);
 }
