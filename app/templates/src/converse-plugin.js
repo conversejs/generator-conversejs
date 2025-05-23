@@ -1,5 +1,7 @@
 // A Converse.js plugin
 
+const pluginName = 'my-converse-plugin';
+
 const plugin = {
     // Dependencies are other plugins which might be
     // overridden or relied upon, and therefore need to be loaded before
@@ -14,7 +16,7 @@ const plugin = {
     // Converse.js's plugin mechanism will call the initialize
     // method on any plugin (if it exists) as soon as all the plugin
     // have been loaded.
-    initialize () {
+    initialize() {
         // Commonly used utilities and variables can be found under the "env"
         // namespace of the "converse" global.
         //
@@ -25,14 +27,14 @@ const plugin = {
         // `_converse` and `api` objects.
         const { _converse } = this;
         const { api, log } = _converse;
-        log.info("The <%= name %> plugin is being initialized");
+        log.info('The <%= name %> plugin is being initialized');
 
         // You can specify configuration settings related to this
         // plugin, and also override the default values of existing
         // configuration settings.
         api.settings.update({
-             'initialize_message': 'Initializing <%= name %>!'
-         });
+            initialize_message: 'Initializing <%= name %>!',
+        });
 
         // Settings are passed in when `converse.initialize` is called.
         // For example:
@@ -74,7 +76,7 @@ const plugin = {
         //
         // For example, the getToolbarButtons hook allows you to add new buttons to the chat toolbar.
         // https://conversejs.org/docs/html/api/-_converse.html#event:getToolbarButtons
-         api.listen.on('getToolbarButtons', (_toolbar_el, buttons) => {
+        api.listen.on('getToolbarButtons', (_toolbar_el, buttons) => {
             buttons.push(html`
                 <button class="my-button" @click=${alert('hello world!')}>
                     <converse-icon class="fa fa-eye" size="1em" color="blue"></converse-icon>
@@ -82,16 +84,22 @@ const plugin = {
             `);
             return buttons;
         });
-    }
+    },
+};
 
-}
+/**
+ * @typedef {Window & globalThis & {converse: any} } WindowWithConverse
+ */
+let converse = /** @type {WindowWithConverse} */ (window).converse;
 
-
-if (typeof converse === "undefined") {
+if (typeof converse === 'undefined') {
     window.addEventListener(
         'converse-loaded',
-        () => converse.plugins.add("my-example-plugin", plugin)
+        /** @param {CustomEvent} ev */ (ev) => {
+            converse = ev.detail?.converse;
+            converse.plugins.add(pluginName, plugin);
+        }
     );
 } else {
-    converse.plugins.add("my-example-plugin", plugin);
+    converse.plugins.add(pluginName, plugin);
 }

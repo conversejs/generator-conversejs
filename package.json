@@ -1,8 +1,10 @@
 {
   "name": "generator-conversejs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Create a Converse.js plugin",
   "main": "src/converse-plugin.js",
+  "type": "module",
+  "exports": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,6 +19,13 @@
   "author": "JC Brand",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "yeoman-generator": "^4.9.0"
+    "yeoman-generator": "^7.5.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
+
